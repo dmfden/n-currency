@@ -3,7 +3,7 @@ import bgImage from '/public/images/hero-bg.jpg';
 import heroImage from '/public/images/conent-img1.jpg';
 import Button, { EbuttonTypes } from "../../_components/Button";
 import Link from "next/link";
-import { smallWrapper } from "@/constants";
+import { smallWrapper } from "../../proj_constants";
 
 function Hero (){
     return (

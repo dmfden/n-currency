@@ -1,5 +1,5 @@
 import LogoTitle from "../LogoTitle";
-import { navLinks } from "@/constants";
+import {navLinks} from "../../proj_constants"
 import mapLinks from "./mapLinks";
 import Image from 'next/image';
 import phoneIcon from '/public/images/icon-tel2.svg';

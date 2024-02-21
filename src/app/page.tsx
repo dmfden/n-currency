@@ -3,7 +3,7 @@ import Button, { EbuttonTypes } from "./_components/Button";
 import Link from "next/link";
 import Hero from "./_components/Hero";
 import contentImage from '/public/images/content-img.jpg';
-import { smallWrapper } from "@/constants";
+import { smallWrapper } from "./proj_constants";
 
 export default function Home() {
   return (

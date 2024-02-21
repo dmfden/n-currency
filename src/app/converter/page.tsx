@@ -1,5 +1,5 @@
 import Hero from "../_components/Hero";
-import { smallWrapper } from "@/constants";
+import { smallWrapper } from "../proj_constants";
 
 import type { Metadata } from "next";
 

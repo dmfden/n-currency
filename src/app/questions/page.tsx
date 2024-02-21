@@ -1,4 +1,4 @@
-import { smallWrapper } from "@/constants";
+import { smallWrapper } from "../proj_constants";
 
 import type { Metadata } from "next";
 

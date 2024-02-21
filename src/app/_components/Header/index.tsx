@@ -1,8 +1,7 @@
-import { navLinks } from "@/constants";
+import { navLinks } from "../../proj_constants";
 import GeneralNavigation, { TNavLink } from "../GeneraNavigation";
 import LogoTitle from "../LogoTitle";
 import PersonalAccount from "../PersonalAccount";
-import { smallWrapper } from "@/constants";
 
 
 function Header() {

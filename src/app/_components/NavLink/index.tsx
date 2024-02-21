@@ -17,7 +17,7 @@ function NavLink({ href, exact, children, className }:INavLink) {
     const isActive = exact ? pathname === href : pathname.startsWith(href);
 
     if (isActive) {
-        className  += ' font-bold text-blueGeneral-100 border-blueGeneral-100';
+        className  += ' font-bold text-blueGeneral-100';
     }
 
     return (

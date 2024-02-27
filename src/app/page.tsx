@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Button, { EbuttonTypes } from "./_components/Button";
+import CTA, { ECtaColor, ECtaType } from "./_components/CTA";
 import Link from "next/link";
 import Hero from "./_components/Hero";
 import contentImage from '/public/images/content-img.jpg';
@@ -15,7 +15,7 @@ export default function Home() {
           <h3 className="text-xl pb-7 text-stoneWhite-500">Переважна діяльність банківської групи за останні чотири звітні квартали 
           становить 50 і більше відсотків.</h3>
           <Link href={"/converter"}>
-            <Button buttonType={EbuttonTypes.primary}>Конвертувати валюту</Button>
+            <CTA ctaColor={ECtaColor.primary} ctaType={ECtaType.link}>Конвертувати валюту</CTA>
           </Link>
         </div>
         <div className="w-full md:w-[436px]">

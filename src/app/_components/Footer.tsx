@@ -1,6 +1,5 @@
-import LogoTitle from "../LogoTitle";
-import {navLinks} from "../../proj_constants"
-import mapLinks from "./mapLinks";
+import LogoTitle from "./LogoTitle";
+import { navLinks } from "../proj_constants";
 import Image from 'next/image';
 import phoneIcon from '/public/images/icon-tel2.svg';
 import phoneIcon2 from '/public/images/icon-tel1.svg';
@@ -9,6 +8,7 @@ import { AiFillInstagram } from "react-icons/ai";
 import { FaTwitter } from "react-icons/fa";
 import { FaYoutube } from "react-icons/fa";
 import Link from "next/link";
+import { TLink } from "./Types/TLink";
 
 function Footer() {
     return (
@@ -22,7 +22,10 @@ function Footer() {
                 </article>
                 <article>
                     <ul className="text-stoneWhite-500">
-                        {mapLinks(navLinks)}
+                        {navLinks.map((link:TLink, index) =>
+                            <li key={index}>
+                                <Link href={link.path}>{link.name}</Link>
+                            </li>)}
                     </ul>
                 </article>
                 <article>
@@ -42,16 +45,16 @@ function Footer() {
                 <article>
                     <div className="flex gap-2 justify-end">
                         <Link href="https://www.facebook.com/" target="_blank">
-                            <FaFacebookF width={16} role="presentation"/>
+                            <FaFacebookF width={16} role="presentation" />
                         </Link>
                         <Link href="https://www.instagram.com/" target="_blank">
-                            <AiFillInstagram width={16} role="presentation"/>
+                            <AiFillInstagram width={16} role="presentation" />
                         </Link>
                         <Link href="https://twitter.com/" target="_blank">
-                            <FaTwitter width={16} role="presentation"/>
+                            <FaTwitter width={16} role="presentation" />
                         </Link>
                         <Link href="https://www.youtube.com/" target="_blank">
-                            <FaYoutube width={16} role="presentation"/>
+                            <FaYoutube width={16} role="presentation" />
                         </Link>
                     </div>
                 </article>

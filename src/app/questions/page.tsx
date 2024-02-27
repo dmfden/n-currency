@@ -13,10 +13,10 @@ export default function Questions() {
   return (
     <>
     <section className={ `bg-white w-screen ${smallWrapper}`}>
-    <div className="max-w-full md:w-[42%]">
-      <h2>Questions page</h2>
-                </div>
-      </section>
+      <div className="max-w-full md:w-[42%]">
+        <h2>Questions page</h2>
+      </div>
+    </section>
 </>
   );
 }

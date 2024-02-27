@@ -14,11 +14,11 @@ export default function Converter() {
   return (
     <>
     <Hero />
-    <section className={ `bg-white w-screen ${smallWrapper}`}>
-    <div className="max-w-full md:w-[42%]">
-      <h2>Converter page</h2>
-                </div>
+      <section className={ `bg-white w-screen ${smallWrapper}`}>
+        <div className="max-w-full md:w-[42%]">
+          <h2>Converter page</h2>
+        </div>
       </section>
-</>
+    </>
   );
 }

@@ -1,7 +1,7 @@
-import { navLinks } from "../../proj_constants";
-import GeneralNavigation, { TNavLink } from "../GeneraNavigation";
-import LogoTitle from "../LogoTitle";
-import PersonalAccount from "../PersonalAccount";
+import { navLinks } from "../proj_constants";
+import GeneralNavigation from "./GeneraNavigation";
+import LogoTitle from "./LogoTitle";
+import PersonalAccount from "./PersonalAccount";
 
 
 function Header() {

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { workSans } from "../../fonts";
+import { workSans } from "../fonts";
 import Image from "next/image";
 import logo from '/public/images/logo.svg';
 

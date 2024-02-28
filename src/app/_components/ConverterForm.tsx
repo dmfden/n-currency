@@ -56,7 +56,7 @@ function ConverterForm(): JSX.Element {
                         <div className="flex gap-3 w-full">
                             <input type="text" className="flex text-center border rounded py-4 px-2 border-stoneWhite-500 w-[216px] md:w-[150px] lg:w-[220px]" placeholder="Введіть суму" />
                             <select name="currencyChange" id="currencyChange" className="border rounded py-4 px-2 border-stoneWhite-500 w-4/12">
-                                <option value="UAH" selected>UAH</option>
+                                <option value="UAH">UAH</option>
                                 <option value="value1">Значение 1</option>
                                 <option value="value2">Значение 2</option>
                                 <option value="value3">Значение 3</option>

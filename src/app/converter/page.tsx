@@ -15,7 +15,6 @@ export const metadata: Metadata = {
 
 export default async function Converter() {
   const currencyArr = await getAllCurrencies();
-  
 
   const historyBlock = true;
 

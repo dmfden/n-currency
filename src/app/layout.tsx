@@ -17,10 +17,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-     <body className={bodyClasses}>
-      <Header />
-      <main className="mb-auto">{children}</main>
-      <Footer />
+      <body className={bodyClasses}>
+        <Header />
+        <main className="mb-auto">{children}</main>
+        <Footer />
       </body>
     </html>
   );

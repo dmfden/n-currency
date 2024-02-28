@@ -3,6 +3,7 @@ import { smallWrapper } from "../proj_constants";
 import type { Metadata } from "next";
 import ConverterForm from "../_components/ConverterForm";
 import HistoryCurrencies from "../_components/HistoryCurrencies";
+import getAllCurrencies from "../_api/getAllCurencies";
 
 export const metadata: Metadata = {
   title: "Convert Page",
@@ -10,7 +11,9 @@ export const metadata: Metadata = {
 };
 
 
-export default function Converter() {
+export default async function Converter() {
+  const currencyArr = await getAllCurrencies();
+  
 
   const historyBlock = true;
 

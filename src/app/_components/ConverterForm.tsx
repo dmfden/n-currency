@@ -4,14 +4,24 @@ import logoArrow from '/public/images/icon-arrows.svg';
 import CTA, { ECtaColor, ECtaType } from "./CTA";
 import { format } from "date-fns/format";
 import { sub } from "date-fns/sub";
+import  getAllCurrencies  from "../_api/getAllCurencies";
+import { ICurrencyItem } from "./Types/ICurrencyItem";
+import { useEffect, useState } from "react";
 
 
 function ConverterForm(): JSX.Element {
+    const [currArr, setCurrArr] = useState<ICurrencyItem[] | null>(null);
+    useEffect(()=>{
+        getAllCurrencies().then(result=> setCurrArr([...result]));
+    },[]);
+
     const currentDate = new Date();
     const currentDateF = format(currentDate,"yyyy-MM-dd");
     const weekAgo = sub(currentDate,{weeks: 1,});
     const weekAgoF = format(weekAgo, "yyyy-MM-dd");
     console.log(weekAgo);
+    
+
 
     const saveButtonHandler = (event: any): void => {
         const tt = event.target as HTMLFormElement;
@@ -28,10 +38,11 @@ function ConverterForm(): JSX.Element {
                         <div className="flex gap-3 w-full">
                             <input type="text" className="text-center border rounded py-4 px-2 border-stoneWhite-500 w-[216px] md:w-[150px] lg:w-[220px]" placeholder="Введіть суму" />
                             <select name="currency" id="currency" className="border rounded py-4 px-2 border-stoneWhite-500 w-4/12">
-                                <option value="default">UAH</option>
-                                <option value="value1">Значение 1</option>
-                                <option value="value2">Значение 2</option>
-                                <option value="value3">Значение 3</option>
+                                {
+                                    currArr ? currArr.map((el:any, index:any)=> {
+                                        return <option value={el.cc} key={index}>{el.cc}</option>
+                                    }) : ''
+                                }
                             </select>
                         </div>
 
@@ -45,7 +56,7 @@ function ConverterForm(): JSX.Element {
                         <div className="flex gap-3 w-full">
                             <input type="text" className="flex text-center border rounded py-4 px-2 border-stoneWhite-500 w-[216px] md:w-[150px] lg:w-[220px]" placeholder="Введіть суму" />
                             <select name="currencyChange" id="currencyChange" className="border rounded py-4 px-2 border-stoneWhite-500 w-4/12">
-                                <option value="default">UAH</option>
+                                <option value="UAH" selected>UAH</option>
                                 <option value="value1">Значение 1</option>
                                 <option value="value2">Значение 2</option>
                                 <option value="value3">Значение 3</option>

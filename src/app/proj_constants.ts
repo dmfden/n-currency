@@ -1,7 +1,7 @@
 
-import { TNavLink } from "./_components/GeneraNavigation";
+import { TLink } from "./_components/Types/TLink";
 
-const navLinks: TNavLink[] = [
+const navLinks: TLink[] = [
     {
         path: '/',
         name: 'Послуги'

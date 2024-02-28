@@ -15,6 +15,7 @@ const config: Config = {
       },
       colors: {
         stoneWhite: {
+          50: '#C1C2CA',
           100: '#F6F7FF',
           500: '#707C87'
         },

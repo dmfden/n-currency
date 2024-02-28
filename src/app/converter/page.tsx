@@ -2,8 +2,10 @@ import Hero from "../_components/Hero";
 import { smallWrapper } from "../proj_constants";
 import type { Metadata } from "next";
 import ConverterForm from "../_components/ConverterForm";
-import HistoryCurrencies from "../_components/HistoryCurrencies";
 import getAllCurrencies from "../_api/getAllCurencies";
+import dynamic from 'next/dynamic';
+const HistoryCurrencies = dynamic(() => import("../_components/HistoryCurrencies"));
+
 
 export const metadata: Metadata = {
   title: "Convert Page",

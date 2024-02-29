@@ -4,7 +4,7 @@ import logoArrow from '/public/images/icon-arrows.svg';
 import CTA, { ECtaColor, ECtaType } from "./CTA";
 import { format } from "date-fns/format";
 import { sub } from "date-fns/sub";
-import  getAllCurrencies  from "../_api/getAllCurencies";
+import  getAllCurrencies  from "../_api/getAllCurrencies";
 import { ICurrencyItem } from "./Types/ICurrencyItem";
 import { useEffect, useState } from "react";
 

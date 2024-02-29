@@ -19,15 +19,6 @@ function ConverterForm(): JSX.Element {
     const currentDateF = format(currentDate,"yyyy-MM-dd");
     const weekAgo = sub(currentDate,{weeks: 1,});
     const weekAgoF = format(weekAgo, "yyyy-MM-dd");
-    console.log(weekAgo);
-    
-
-
-    const saveButtonHandler = (event: any): void => {
-        const tt = event.target as HTMLFormElement;
-        //tt.preventDefault();
-        console.log("!!!!!!!!!! FIRE !!!!!!!!!");
-    }
 
     return (
         <>

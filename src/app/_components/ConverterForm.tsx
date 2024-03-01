@@ -4,10 +4,9 @@ import logoArrow from '/public/images/icon-arrows.svg';
 import CTA, { ECtaColor, ECtaType } from "./CTA";
 import { format } from "date-fns/format";
 import { sub } from "date-fns/sub";
-import { ICurrencyItem } from "./Types/ICurrencyItem";
-import { use, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { getAllCurrencies } from "@/actions/currency";
-import { IInput, useStoreConverter } from "@/stores/converter";
+import { useStoreConverter } from "@/stores/converter";
 import crossCurrency from "@/helpers/crossCurrency";
 import CurrencyInputBlock, { ICurrencyInputBlock } from "./CurrencyInputBlock";
 
@@ -85,6 +84,7 @@ function ConverterForm(): JSX.Element {
             value: isSelectTo ?  Number((inputToValue * rateRelation).toFixed(2)) : inputFromValue,
             currencyName: isSelectTo ? inputFrom.currencyName : updatedSelect.value,
         }
+        
         updateInputs(fromInput, toInput);
     }
 
@@ -106,25 +106,22 @@ function ConverterForm(): JSX.Element {
         selectCurrencyName: inputTo.currencyName,
     }
 
-    return (
-        <>
-            <form>
-                <div className="text-stoneWhite-500 text-xl flex justify-between gap-8 flex-wrap">
-                    <CurrencyInputBlock {...currencyBlockFrom}/>
-                    <div className="max-w-max self-end mb-4">
-                        <Image src={logoArrow} alt="" loading={'eager'} sizes="100vw" role="presentation"
-                            style={{ width: '32px', height: 'auto' }} />
-                    </div>
-                    <CurrencyInputBlock {...currencyBlockTo}/>
+    return (  
+        <form>
+            <div className="text-stoneWhite-500 text-xl flex justify-between gap-8 flex-wrap">
+                <CurrencyInputBlock {...currencyBlockFrom} />
+                <div className="max-w-max self-end mb-4">
+                    <Image src={logoArrow} alt="" loading={'eager'} sizes="100vw" role="presentation" style={{ width: '32px', height: 'auto' }} />
                 </div>
-                <div className="flex justify-between pt-6 gap-3">
-                    <input type="date" id="start" name="start" min={weekAgoF} max={currentDateF} className="border rounded py-4 px-2 border-stoneWhite-500 w-6/12 md:w-[220px]"/>
-                    <div className="w-6/12 md:w-auto">
-                        <CTA ctaColor={ECtaColor.primary} ctaType={ECtaType.button}>Зберегти результат</CTA>
-                    </div>                  
-                </div>
-            </form>          
-        </>
+                <CurrencyInputBlock {...currencyBlockTo} />
+            </div>
+            <div className="flex justify-between pt-6 gap-3">
+                <input type="date" id="start" name="start" min={weekAgoF} max={currentDateF} className="border rounded py-4 px-2 border-stoneWhite-500 w-6/12 md:w-[220px]"/>
+                <div className="w-6/12 md:w-auto">
+                    <CTA ctaColor={ECtaColor.primary} ctaType={ECtaType.button}>Зберегти результат</CTA>
+                </div>                  
+            </div>
+        </form>               
     );
 }
 

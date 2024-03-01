@@ -10,12 +10,10 @@ export const metadata: Metadata = {
 
 export default function Contacts() {
   return (
-    <>
-    <section className={ `bg-white w-screen ${smallWrapper}`}>
+    <section className={`bg-white w-screen ${smallWrapper}`}>
       <div className="max-w-full md:w-[42%]">
         <h2>Contacts page</h2>
       </div>
     </section>
-</>
   );
 }

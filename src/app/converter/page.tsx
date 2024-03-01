@@ -2,7 +2,6 @@ import Hero from "../_components/Hero";
 import { smallWrapper } from "../proj_constants";
 import type { Metadata } from "next";
 import ConverterForm from "../_components/ConverterForm";
-import getAllCurrencies from "../_api/getAllCurrencies";
 import dynamic from 'next/dynamic';
 const HistoryCurrencies = dynamic(() => import("../_components/HistoryCurrencies"));
 
@@ -14,7 +13,6 @@ export const metadata: Metadata = {
 
 
 export default async function Converter() {
-  const currencyArr = await getAllCurrencies();
 
   const historyBlock = true;
 

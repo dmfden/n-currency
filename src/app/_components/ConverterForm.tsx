@@ -4,56 +4,118 @@ import logoArrow from '/public/images/icon-arrows.svg';
 import CTA, { ECtaColor, ECtaType } from "./CTA";
 import { format } from "date-fns/format";
 import { sub } from "date-fns/sub";
-import  getAllCurrencies  from "../_api/getAllCurrencies";
 import { ICurrencyItem } from "./Types/ICurrencyItem";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
+import { getAllCurrencies } from "@/actions/currency";
+import { IInput, useStoreConverter } from "@/stores/converter";
+import crossCurrency from "@/helpers/crossCurrency";
+import CurrencyInputBlock, { ICurrencyInputBlock } from "./CurrencyInputBlock";
 
 
 function ConverterForm(): JSX.Element {
-    const [currArr, setCurrArr] = useState<ICurrencyItem[] | null>(null);
+
+    const setCurrencies = useStoreConverter(state=>state.setCurrencies);
+    const currencies = useStoreConverter(state=>state.currencies);
+    const inputFrom = useStoreConverter(state=>state.inputFrom);
+    const inputTo = useStoreConverter(state=>state.inputTo);
+    const updateInputs = useStoreConverter(state=>state.updateInputs);
+
     useEffect(()=>{
-        getAllCurrencies().then(result=> setCurrArr([...result]));
+        getAllCurrencies().then(result=> setCurrencies(result));
     },[]);
 
+
+    const fromRate = currencies.find(el=>el.cc === inputFrom.currencyName)?.rate;
+    const toRate = currencies.find(el=>el.cc === inputTo.currencyName)?.rate;
+    const rateRelation = fromRate && toRate && crossCurrency(toRate, fromRate); 
+  
     const currentDate = new Date();
     const currentDateF = format(currentDate,"yyyy-MM-dd");
     const weekAgo = sub(currentDate,{weeks: 1,});
     const weekAgoF = format(weekAgo, "yyyy-MM-dd");
 
+
+    const handleInput = (event: React.FormEvent<HTMLInputElement>)=> {
+        const updatedInput = event.currentTarget;
+        const inputValue = Number(updatedInput.value);
+
+        if(!rateRelation) {
+            return;
+        }
+        const isUpdatedInputTo = updatedInput.name === 'inputTo';
+        const calculatedValue = isUpdatedInputTo ? inputValue * rateRelation : inputValue / rateRelation;
+
+        const toInput = {
+            value: isUpdatedInputTo ? inputValue : Number(calculatedValue.toFixed(2)),
+            currencyName: inputTo.currencyName,
+        }
+
+        const fromInput = {
+            value: isUpdatedInputTo ? Number(calculatedValue.toFixed(2)) : inputValue,
+            currencyName: inputFrom.currencyName,
+        }
+        updateInputs(fromInput, toInput);
+        
+    }
+
+    const handleSelect = (event: React.FormEvent<HTMLSelectElement>)=> {
+        const updatedSelect = event.currentTarget;
+        const isSelectTo = updatedSelect.name === 'selectTo';
+ 
+        const toRate = currencies.find(el=>el.cc === updatedSelect.value)?.rate;
+        let rateRelation = fromRate && toRate &&  crossCurrency(fromRate, toRate);
+        
+        if(isSelectTo){
+            rateRelation = fromRate && toRate &&  crossCurrency(toRate, fromRate);
+        }
+        const inputToValue = Number(inputTo.value);
+        const inputFromValue = Number(inputFrom.value);
+       
+
+        if(!rateRelation){
+            return;
+        }
+
+        const toInput = {
+            value: isSelectTo ? inputToValue : Number((inputToValue / rateRelation).toFixed(2)),
+            currencyName: isSelectTo ? updatedSelect.value : inputTo.currencyName,
+        }
+
+        const fromInput = {
+            value: isSelectTo ?  Number((inputToValue * rateRelation).toFixed(2)) : inputFromValue,
+            currencyName: isSelectTo ? inputFrom.currencyName : updatedSelect.value,
+        }
+        updateInputs(fromInput, toInput);
+    }
+
+    const currencyBlockFrom: ICurrencyInputBlock =  {
+        selectName: "selectFrom",
+        inputName: "inputFrom",
+        handleInput: handleInput,
+        handleSelect: handleSelect,
+        inputValue: inputFrom.value,
+        selectCurrencyName: inputFrom.currencyName,
+    }
+
+    const currencyBlockTo: ICurrencyInputBlock = {
+        selectName: "selectTo",
+        inputName: "inputTo",
+        handleInput: handleInput,
+        handleSelect: handleSelect,
+        inputValue: inputTo.value,
+        selectCurrencyName: inputTo.currencyName,
+    }
+
     return (
         <>
             <form>
                 <div className="text-stoneWhite-500 text-xl flex justify-between gap-8 flex-wrap">
-                    <div className="w-full md:w-5/12">
-                        <p className="text-xl pb-7">В мене є:</p>
-                        <div className="flex gap-3 w-full">
-                            <input type="text" className="text-center border rounded py-4 px-2 border-stoneWhite-500 w-[216px] md:w-[150px] lg:w-[220px]" placeholder="Введіть суму" />
-                            <select name="currency" id="currency" className="border rounded py-4 px-2 border-stoneWhite-500 w-4/12">
-                                {
-                                    currArr ? currArr.map((el:any, index:any)=> {
-                                        return <option value={el.cc} key={index}>{el.cc}</option>
-                                    }) : ''
-                                }
-                            </select>
-                        </div>
-
-                    </div>
+                    <CurrencyInputBlock {...currencyBlockFrom}/>
                     <div className="max-w-max self-end mb-4">
                         <Image src={logoArrow} alt="" loading={'eager'} sizes="100vw" role="presentation"
                             style={{ width: '32px', height: 'auto' }} />
                     </div>
-                    <div className="w-full md:w-5/12">
-                        <p className="text-xl pb-7">Хочу придбати:</p>
-                        <div className="flex gap-3 w-full">
-                            <input type="text" className="flex text-center border rounded py-4 px-2 border-stoneWhite-500 w-[216px] md:w-[150px] lg:w-[220px]" placeholder="Введіть суму" />
-                            <select name="currencyChange" id="currencyChange" className="border rounded py-4 px-2 border-stoneWhite-500 w-4/12">
-                                <option value="UAH">UAH</option>
-                                <option value="value1">Значение 1</option>
-                                <option value="value2">Значение 2</option>
-                                <option value="value3">Значение 3</option>
-                            </select>
-                        </div>
-                    </div>
+                    <CurrencyInputBlock {...currencyBlockTo}/>
                 </div>
                 <div className="flex justify-between pt-6 gap-3">
                     <input type="date" id="start" name="start" min={weekAgoF} max={currentDateF} className="border rounded py-4 px-2 border-stoneWhite-500 w-6/12 md:w-[220px]"/>

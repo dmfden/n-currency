@@ -17,6 +17,9 @@ function HistoryCurrencies(): JSX.Element {
     const handleClearButton = ()=> {
         resetHistoryStore();
     }
+
+    
+
     if (showHistoryItems.length > 0){
       
         return (

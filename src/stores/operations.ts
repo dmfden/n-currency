@@ -9,7 +9,6 @@ export interface IOperation {
 }
 
 interface IOperationsStore {
-    //operations: IOperation[];
     addOperation: (operation: IOperation)=>void,
     reset: ()=>void,
 }
@@ -17,7 +16,7 @@ interface IOperationsStore {
 type TOperation = {
     operations: IOperation[];
 }
-// define the initial state
+
 const initialState: TOperation = {
     operations: [],
   }
@@ -25,7 +24,7 @@ const initialState: TOperation = {
 export const useStoreOperations = create<IOperationsStore & TOperation>()(
     devtools(
         persist(
-            (set, get) => ({
+            (set) => ({
                 ...initialState,
                 addOperation: (operation: IOperation)=> set((state)=> ({
                     operations: [...state.operations, operation],

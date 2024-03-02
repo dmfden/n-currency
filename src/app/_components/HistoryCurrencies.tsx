@@ -9,11 +9,13 @@ import { smallWrapper } from "../proj_constants";
 function HistoryCurrencies(): JSX.Element {
 
     const operations = useStoreOperations(state=> state.operations);
-    const restHistoryStore = useStoreOperations(state=> state.reset);
+    const resetHistoryStore = useStoreOperations(state=> state.reset);
 
-    const showHistoryItems =  operations.length > 9 ? operations.slice(-10).reverse() : operations.slice().reverse();
+    const showHistoryItems =  operations.length > 9 ? operations.slice(-10) : operations.slice();
+    showHistoryItems.reverse();
+    
     const handleClearButton = ()=> {
-        restHistoryStore();
+        resetHistoryStore();
     }
     if (showHistoryItems.length > 0){
       
@@ -31,7 +33,7 @@ function HistoryCurrencies(): JSX.Element {
                 </div>
                 <ul className="flex flex-wrap flex-col md:flex-row justify-between text-lg gap-y-4">
                     {showHistoryItems.length > 0 && showHistoryItems.map((el, index)=>
-                    <li className="flex justify-between items-center w-full md:w-[47%] pl-5 pr-5 md:pr-6 py-2 bg-white rounded overflow-x-auto" key={`${index}_${el.date}`}>
+                    <li className="flex justify-between items-center w-full md:w-[47%] pl-5 pr-5 md:pr-6 py-2 bg-white rounded overflow-x-auto animate-fadeInDown" key={`${index}_${el.date}`}>
                         <span className="text-stoneWhite-50">{el.date}</span>
                         <span className="text-stoneWhite-500 font-semibold">{el.from.value} {el.from.currencyName}</span>
                         <div className="max-w-max">

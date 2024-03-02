@@ -11,7 +11,8 @@ import crossCurrency from "@/helpers/crossCurrency";
 import CurrencyInputBlock, { ICurrencyInputBlock } from "./CurrencyInputBlock";
 import { IOperation, useStoreOperations } from "@/stores/operations";
 import { getAllCurrenciesByDate } from "@/actions/currency";
-
+import { isAfter } from "date-fns";
+import { revalidateAllCurrenciesByTag } from "@/actions/currency";
 
 function ConverterForm(): JSX.Element {
 
@@ -21,9 +22,26 @@ function ConverterForm(): JSX.Element {
     const inputTo = useStoreConverter(state=>state.inputTo);
     const updateInputs = useStoreConverter(state=>state.updateInputs);
     const addOperations = useStoreOperations(state=> state.addOperation);
+    const setCurrenciesDate = useStoreConverter(state=> state.setCurrenciesDate);
 
     useEffect(()=>{
-        getAllCurrencies().then(result=> setCurrencies(result));
+
+        getAllCurrencies().then(result=> {
+            const currentItemsDate = result[0]?.exchangedate;
+            if(currentItemsDate) {
+                const dateFromReq = new Date(currentItemsDate);
+                const currentDate = new Date();
+                const isCurrDateAfterApiDate = isAfter(currentDate, dateFromReq);
+                isCurrDateAfterApiDate && revalidateAllCurrenciesByTag("allCurrencies");
+                getAllCurrencies().then(result=>{
+                    setCurrencies(result);
+                });
+
+            } else {
+                setCurrencies(result)
+            }
+            
+        });
     },[]);
 
 
@@ -66,13 +84,13 @@ function ConverterForm(): JSX.Element {
  
         const toRate = currencies.find(el=>el.cc === updatedSelect.value)?.rate;
         let rateRelation = fromRate && toRate &&  crossCurrency(fromRate, toRate);
-        
+    
         if(isSelectTo){
             rateRelation = fromRate && toRate &&  crossCurrency(toRate, fromRate);
         }
+
         const inputToValue = Number(inputTo.value);
         const inputFromValue = Number(inputFrom.value);
-       
 
         if(!rateRelation){
             return;
@@ -108,14 +126,17 @@ function ConverterForm(): JSX.Element {
     }
 
     const handleDateInput = (event: React.FormEvent<HTMLInputElement>)=> {
-        console.log(new Date(event.currentTarget.value));
         const formattedDate = format(new Date(event.currentTarget.value),"yyyyMMdd");
-        console.log('FORMATTED', format(new Date(event.currentTarget.value), 'yyyyMMdd'))
-        console.log('CURRENCYS CURRET-----', currencies);
-       getAllCurrenciesByDate(formattedDate).then(result=> setCurrencies(result));
+       getAllCurrenciesByDate(formattedDate)
+       .then(result => {
+        const currenciesDate = result[0]?.exchangedate;
+        setCurrenciesDate(currenciesDate);
+        setCurrencies(result);
+    });
     }
 
     const currencyBlockFrom: ICurrencyInputBlock =  {
+        blockTitle: "В мене є:",
         selectName: "selectFrom",
         inputName: "inputFrom",
         handleInput: handleInput,
@@ -125,6 +146,7 @@ function ConverterForm(): JSX.Element {
     }
 
     const currencyBlockTo: ICurrencyInputBlock = {
+        blockTitle: "Хочу придбати:",
         selectName: "selectTo",
         inputName: "inputTo",
         handleInput: handleInput,

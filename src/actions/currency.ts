@@ -34,5 +34,6 @@ export async function getAllCurrenciesByDate(date:string):Promise<ICurrencyItem[
 
 
 export async function revalidateAllCurrenciesByTag(tag: string) {
+    console.log('Fire revalidate');
   revalidateTag(tag);
 }

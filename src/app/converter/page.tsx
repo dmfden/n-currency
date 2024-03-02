@@ -3,7 +3,7 @@ import { smallWrapper } from "../proj_constants";
 import type { Metadata } from "next";
 import ConverterForm from "../_components/ConverterForm";
 import dynamic from 'next/dynamic';
-import { getAllCurrenciesByDate } from "@/actions/currency";
+import CurrenciesDate from "../_components/CurrenciesDate";
 const HistoryCurrencies = dynamic(() => import("../_components/HistoryCurrencies"));
 
 
@@ -22,6 +22,7 @@ export default async function Converter() {
           <div className="place-self-start w-full xl:px-16">
             <h2 className="text-[2.5rem] font-bold mb-[70px]">Конвертер валют</h2>
           <ConverterForm />
+          <CurrenciesDate />
           </div>
         </section>
       </div>

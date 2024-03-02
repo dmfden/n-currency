@@ -7,12 +7,14 @@ interface IStoreConverter {
     inputFrom: IInput,
     inputTo: IInput,
     currencies: ICurrencyItem[],
+    currenciesDate: string | null;
     setCurrencies: (items: ICurrencyItem[])=> void,
     updateInputs: (from: IInput, to: IInput)=>void,
+    setCurrenciesDate: (date: string) => void,
 
 }
 
-export const useStoreConverter = create<IStoreConverter>()((set, get) => ({
+export const useStoreConverter = create<IStoreConverter>()((set) => ({
 
     inputFrom: {
         value: 0,
@@ -21,10 +23,11 @@ export const useStoreConverter = create<IStoreConverter>()((set, get) => ({
     inputTo: {
         value: 0,
         currencyName: "UAH",
-    },
-    
+    }, 
     currencies: [],
-    setCurrencies: (items: ICurrencyItem[]) => set({currencies: [...items,
+    currenciesDate: null,
+    setCurrencies: (items: ICurrencyItem[]) => set({
+        currencies: [...items,
         {
         r030: 999,
         txt: 'UAH',
@@ -32,13 +35,14 @@ export const useStoreConverter = create<IStoreConverter>()((set, get) => ({
         cc: 'UAH',
         exchangedate: '--'
     }]}),
-    updateInputs: (from: IInput, to: IInput) => {
-        const current = get();
-       return set({
+
+    updateInputs: (from: IInput, to: IInput) => set({
         inputFrom: from,
         inputTo: to
-       });
-    },
+    }),
+    setCurrenciesDate: (date: string) => set({
+        currenciesDate: date
+    }),
 
   }));
 

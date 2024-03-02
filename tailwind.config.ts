@@ -8,6 +8,27 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      animation: {
+        'bounce-ended': 'bounce 1s 2',
+        'backInLeft': 'backInLeft 1s 1',
+        'fadeInUp': 'fadeInUp 1s 1',
+        'fadeInDown': 'fadeInDown 1s 1',
+      },
+      keyframes: {
+        backInLeft: {
+          '0%': { transform: 'translateX(-2000px) scale(0.7)', opacity: '0.7' },
+          '80%': { transform: 'translateX(0px) scale(0.7)', opacity: '0.7' },
+          '100%': { transform: 'scale(1)', opacity: '1' },
+        },
+        fadeInUp: {
+          'from': {transform: 'translate3d(0, 100%, 0)', opacity: '0'},
+          'to': {transform: 'translate3d(0, 0, 0)', opacity: '1'}
+        },
+        fadeInDown: {
+          'from': {transform: 'translate3d(0, -100%, 0)', opacity: '0'},
+          'to': {transform: 'translate3d(0, 0, 0)', opacity: '1'}
+        }
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

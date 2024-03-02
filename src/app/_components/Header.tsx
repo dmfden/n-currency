@@ -1,3 +1,4 @@
+'use server';
 import { navLinks } from "../proj_constants";
 import GeneralNavigation from "./GeneraNavigation";
 import LogoTitle from "./LogoTitle";

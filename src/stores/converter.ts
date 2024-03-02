@@ -1,10 +1,7 @@
 import { create } from 'zustand';
 import { ICurrencyItem } from '@/app/_components/Types/ICurrencyItem';
+import { IInput } from '@/app/_components/Types/ICurrencyItem';
 
-export interface IInput {
-    value: number,
-    currencyName: string
-}
 
 interface IStoreConverter {
     inputFrom: IInput,

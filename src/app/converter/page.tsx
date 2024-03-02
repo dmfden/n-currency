@@ -3,6 +3,7 @@ import { smallWrapper } from "../proj_constants";
 import type { Metadata } from "next";
 import ConverterForm from "../_components/ConverterForm";
 import dynamic from 'next/dynamic';
+import { getAllCurrenciesByDate } from "@/actions/currency";
 const HistoryCurrencies = dynamic(() => import("../_components/HistoryCurrencies"));
 
 
@@ -12,8 +13,6 @@ export const metadata: Metadata = {
 };
 
 export default async function Converter() {
-
-  const historyBlock = true;
 
   return (
     <>
@@ -26,14 +25,7 @@ export default async function Converter() {
           </div>
         </section>
       </div>
-      {historyBlock && 
-      <div className={`bg-white w-full py-20`}>
-        <section className={`bg-stoneWhite-100 w-screen ${smallWrapper}`}>
-          <div className="place-self-start w-full xl:px-16">
-            <HistoryCurrencies />
-          </div>
-        </section>
-        </div>}
+      <HistoryCurrencies />
     </>
   );
 }

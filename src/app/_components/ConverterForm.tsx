@@ -9,6 +9,8 @@ import { getAllCurrencies } from "@/actions/currency";
 import { useStoreConverter } from "@/stores/converter";
 import crossCurrency from "@/helpers/crossCurrency";
 import CurrencyInputBlock, { ICurrencyInputBlock } from "./CurrencyInputBlock";
+import { IOperation, useStoreOperations } from "@/stores/operations";
+import { getAllCurrenciesByDate } from "@/actions/currency";
 
 
 function ConverterForm(): JSX.Element {
@@ -18,6 +20,7 @@ function ConverterForm(): JSX.Element {
     const inputFrom = useStoreConverter(state=>state.inputFrom);
     const inputTo = useStoreConverter(state=>state.inputTo);
     const updateInputs = useStoreConverter(state=>state.updateInputs);
+    const addOperations = useStoreOperations(state=> state.addOperation);
 
     useEffect(()=>{
         getAllCurrencies().then(result=> setCurrencies(result));
@@ -88,6 +91,30 @@ function ConverterForm(): JSX.Element {
         updateInputs(fromInput, toInput);
     }
 
+    const handleForm = (event: React.FormEvent<HTMLFormElement>)=> {
+        event.preventDefault();
+        const newOperation: IOperation = {
+            date: format(new Date(), "dd.MM.yyyy"),
+            from: {
+                value: inputFrom.value,
+                currencyName: inputFrom.currencyName,
+            },
+            to: {
+                value: inputTo.value,
+                currencyName: inputTo.currencyName,
+            }
+        }
+        addOperations(newOperation);
+    }
+
+    const handleDateInput = (event: React.FormEvent<HTMLInputElement>)=> {
+        console.log(new Date(event.currentTarget.value));
+        const formattedDate = format(new Date(event.currentTarget.value),"yyyyMMdd");
+        console.log('FORMATTED', format(new Date(event.currentTarget.value), 'yyyyMMdd'))
+        console.log('CURRENCYS CURRET-----', currencies);
+       getAllCurrenciesByDate(formattedDate).then(result=> setCurrencies(result));
+    }
+
     const currencyBlockFrom: ICurrencyInputBlock =  {
         selectName: "selectFrom",
         inputName: "inputFrom",
@@ -107,7 +134,7 @@ function ConverterForm(): JSX.Element {
     }
 
     return (  
-        <form>
+        <form onSubmit={handleForm}>
             <div className="text-stoneWhite-500 text-xl flex justify-between gap-8 flex-wrap">
                 <CurrencyInputBlock {...currencyBlockFrom} />
                 <div className="max-w-max self-end mb-4">
@@ -116,7 +143,7 @@ function ConverterForm(): JSX.Element {
                 <CurrencyInputBlock {...currencyBlockTo} />
             </div>
             <div className="flex justify-between pt-6 gap-3">
-                <input type="date" id="start" name="start" min={weekAgoF} max={currentDateF} className="border rounded py-4 px-2 border-stoneWhite-500 w-6/12 md:w-[220px]"/>
+                <input type="date" id="start" name="start" min={weekAgoF} max={currentDateF} className="border rounded py-4 px-2 border-stoneWhite-500 w-6/12 md:w-[220px]" onChange={handleDateInput}/>
                 <div className="w-6/12 md:w-auto">
                     <CTA ctaColor={ECtaColor.primary} ctaType={ECtaType.button}>Зберегти результат</CTA>
                 </div>                  

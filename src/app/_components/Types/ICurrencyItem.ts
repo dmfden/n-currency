@@ -5,3 +5,8 @@ export interface ICurrencyItem {
     cc: string,
     exchangedate: string
 }
+
+export interface IInput {
+    value: number,
+    currencyName: string
+}

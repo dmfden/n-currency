@@ -16,50 +16,49 @@ import { revalidateAllCurrenciesByTag } from "@/actions/currency";
 
 function ConverterForm(): JSX.Element {
 
-    const setCurrencies = useStoreConverter(state=>state.setCurrencies);
-    const currencies = useStoreConverter(state=>state.currencies);
-    const inputFrom = useStoreConverter(state=>state.inputFrom);
-    const inputTo = useStoreConverter(state=>state.inputTo);
-    const updateInputs = useStoreConverter(state=>state.updateInputs);
-    const addOperations = useStoreOperations(state=> state.addOperation);
-    const setCurrenciesDate = useStoreConverter(state=> state.setCurrenciesDate);
+    const setCurrencies = useStoreConverter(state => state.setCurrencies);
+    const currencies = useStoreConverter(state => state.currencies);
+    const inputFrom = useStoreConverter(state => state.inputFrom);
+    const inputTo = useStoreConverter(state => state.inputTo);
+    const updateInputs = useStoreConverter(state => state.updateInputs);
+    const addOperations = useStoreOperations(state => state.addOperation);
+    const setCurrenciesDate = useStoreConverter(state => state.setCurrenciesDate);
 
-    useEffect(()=>{
+    useEffect(() => {
 
-        getAllCurrencies().then(result=> {
+        getAllCurrencies().then(result => {
             const currentItemsDate = result[0]?.exchangedate;
-            if(currentItemsDate) {
+            if (currentItemsDate) {
                 const dateFromReq = new Date(currentItemsDate);
                 const currentDate = new Date();
                 const isCurrDateAfterApiDate = isAfter(currentDate, dateFromReq);
                 isCurrDateAfterApiDate && revalidateAllCurrenciesByTag("allCurrencies");
-                getAllCurrencies().then(result=>{
+                getAllCurrencies().then(result => {
                     setCurrencies(result);
                 });
 
             } else {
                 setCurrencies(result)
             }
-            
         });
-    },[]);
+    }, []);
 
 
-    const fromRate = currencies.find(el=>el.cc === inputFrom.currencyName)?.rate;
-    const toRate = currencies.find(el=>el.cc === inputTo.currencyName)?.rate;
-    const rateRelation = fromRate && toRate && crossCurrency(toRate, fromRate); 
-  
+    const fromRate = currencies.find(el => el.cc === inputFrom.currencyName)?.rate;
+    const toRate = currencies.find(el => el.cc === inputTo.currencyName)?.rate;
+    const rateRelation = fromRate && toRate && crossCurrency(toRate, fromRate);
+
     const currentDate = new Date();
-    const currentDateF = format(currentDate,"yyyy-MM-dd");
-    const weekAgo = sub(currentDate,{weeks: 1,});
+    const currentDateF = format(currentDate, "yyyy-MM-dd");
+    const weekAgo = sub(currentDate, { weeks: 1, });
     const weekAgoF = format(weekAgo, "yyyy-MM-dd");
 
 
-    const handleInput = (event: React.FormEvent<HTMLInputElement>)=> {
+    const handleInput = (event: React.FormEvent<HTMLInputElement>) => {
         const updatedInput = event.currentTarget;
         const inputValue = Number(updatedInput.value);
 
-        if(!rateRelation) {
+        if (!rateRelation) {
             return;
         }
         const isUpdatedInputTo = updatedInput.name === 'inputTo';
@@ -75,24 +74,24 @@ function ConverterForm(): JSX.Element {
             currencyName: inputFrom.currencyName,
         }
         updateInputs(fromInput, toInput);
-        
+
     }
 
-    const handleSelect = (event: React.FormEvent<HTMLSelectElement>)=> {
+    const handleSelect = (event: React.FormEvent<HTMLSelectElement>) => {
         const updatedSelect = event.currentTarget;
         const isSelectTo = updatedSelect.name === 'selectTo';
- 
-        const toRate = currencies.find(el=>el.cc === updatedSelect.value)?.rate;
-        let rateRelation = fromRate && toRate &&  crossCurrency(fromRate, toRate);
-    
-        if(isSelectTo){
-            rateRelation = fromRate && toRate &&  crossCurrency(toRate, fromRate);
+
+        const toRate = currencies.find(el => el.cc === updatedSelect.value)?.rate;
+        let rateRelation = fromRate && toRate && crossCurrency(fromRate, toRate);
+
+        if (isSelectTo) {
+            rateRelation = fromRate && toRate && crossCurrency(toRate, fromRate);
         }
 
         const inputToValue = Number(inputTo.value);
         const inputFromValue = Number(inputFrom.value);
 
-        if(!rateRelation){
+        if (!rateRelation) {
             return;
         }
 
@@ -102,14 +101,14 @@ function ConverterForm(): JSX.Element {
         }
 
         const fromInput = {
-            value: isSelectTo ?  Number((inputToValue * rateRelation).toFixed(2)) : inputFromValue,
+            value: isSelectTo ? Number((inputToValue * rateRelation).toFixed(2)) : inputFromValue,
             currencyName: isSelectTo ? inputFrom.currencyName : updatedSelect.value,
         }
-        
+
         updateInputs(fromInput, toInput);
     }
 
-    const handleForm = (event: React.FormEvent<HTMLFormElement>)=> {
+    const handleForm = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const newOperation: IOperation = {
             date: format(new Date(), "dd.MM.yyyy"),
@@ -125,17 +124,17 @@ function ConverterForm(): JSX.Element {
         addOperations(newOperation);
     }
 
-    const handleDateInput = (event: React.FormEvent<HTMLInputElement>)=> {
-        const formattedDate = format(new Date(event.currentTarget.value),"yyyyMMdd");
-       getAllCurrenciesByDate(formattedDate)
-       .then(result => {
-        const currenciesDate = result[0]?.exchangedate;
-        setCurrenciesDate(currenciesDate);
-        setCurrencies(result);
-    });
+    const handleDateInput = (event: React.FormEvent<HTMLInputElement>) => {
+        const formattedDate = format(new Date(event.currentTarget.value), "yyyyMMdd");
+        getAllCurrenciesByDate(formattedDate)
+            .then(result => {
+                const currenciesDate = result[0]?.exchangedate;
+                setCurrenciesDate(currenciesDate);
+                setCurrencies(result);
+            });
     }
 
-    const currencyBlockFrom: ICurrencyInputBlock =  {
+    const currencyBlockFrom: ICurrencyInputBlock = {
         blockTitle: "В мене є:",
         selectName: "selectFrom",
         inputName: "inputFrom",
@@ -155,7 +154,7 @@ function ConverterForm(): JSX.Element {
         selectCurrencyName: inputTo.currencyName,
     }
 
-    return (  
+    return (
         <form onSubmit={handleForm}>
             <div className="text-stoneWhite-500 text-xl flex justify-between gap-8 flex-wrap">
                 <CurrencyInputBlock {...currencyBlockFrom} />
@@ -165,12 +164,12 @@ function ConverterForm(): JSX.Element {
                 <CurrencyInputBlock {...currencyBlockTo} />
             </div>
             <div className="flex justify-between pt-6 gap-3">
-                <input type="date" id="start" name="start" min={weekAgoF} max={currentDateF} className="border rounded py-4 px-2 border-stoneWhite-500 w-6/12 md:w-[220px]" onChange={handleDateInput}/>
+                <input type="date" id="start" name="start" min={weekAgoF} max={currentDateF} className="border rounded py-4 px-2 border-stoneWhite-500 w-6/12 md:w-[220px]" onChange={handleDateInput} />
                 <div className="w-6/12 md:w-auto">
                     <CTA ctaColor={ECtaColor.primary} ctaType={ECtaType.button}>Зберегти результат</CTA>
-                </div>                  
+                </div>
             </div>
-        </form>               
+        </form>
     );
 }
 
